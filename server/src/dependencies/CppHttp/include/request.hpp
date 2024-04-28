@@ -24,7 +24,7 @@
 
 namespace CppHttp {
 	namespace Utils {
-		std::vector<std::string> Split(std::string const& str, char delimiter) {
+		std::vector<std::string> Split(std::string const str, char delimiter) {
 			std::vector<std::string> split;
 			std::stringstream ss(str);
 			std::string word;
@@ -37,7 +37,7 @@ namespace CppHttp {
 		}
 
 		// Extract route from request
-		std::string GetRoute(std::string const& req) {
+		std::string GetRoute(std::string const req) {
 			std::vector<std::string> split = CppHttp::Utils::Split(req, ' ');
 			std::vector<std::string> split2 = CppHttp::Utils::Split(split[1], '?');
 
@@ -45,14 +45,14 @@ namespace CppHttp {
 		}
 
 		// Extract method from request
-		std::string GetMethod(const std::string& req) {
+		std::string GetMethod(const std::string req) {
 			std::vector<std::string> split = CppHttp::Utils::Split(req, ' ');
 			return split[0];
 		}
 
 		// Extract parameters from request
 		// Returns a map of parameters
-		std::unordered_map<std::string, std::string> GetParameters(const std::string& req) {
+		std::unordered_map<std::string, std::string> GetParameters(const std::string req) {
 			std::vector<std::string> split = CppHttp::Utils::Split(req, ' ');
 			std::string route = split[1];
 			std::regex argsRegex("\\?(.*)");
@@ -76,7 +76,7 @@ namespace CppHttp {
 
 		// Extract headers from request
 		// Returns a map of headers
-		std::unordered_map<std::string, std::string> GetHeaders(std::string& req) {
+		std::unordered_map<std::string, std::string> GetHeaders(std::string req) {
 			int bodyStartChar = req.size();
 
 			if (req.find("\r\n\r\n") != std::string::npos) {
@@ -107,7 +107,7 @@ namespace CppHttp {
 		}
 
 		// Extract body from request
-		std::string GetBody(const std::string& req) {
+		std::string GetBody(const std::string req) {
 			std::string body = "";
 
 			int bodyStartChar = -1;

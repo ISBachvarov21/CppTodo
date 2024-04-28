@@ -263,7 +263,7 @@ namespace CppHttp {
 
                     #ifdef API_DEBUG
                         std::osyncstream(std::cout) << "\033[1;34m[*] Request data:\n";
-                        std::vector<std::string> split = CppHttp::Net::Request::Split(data, '\n');
+                        std::vector<std::string> split = CppHttp::Utils::Split(data, '\n');
                         for (int i = 0; i < split.size(); ++i) {
                             std::osyncstream(std::cout) << "    " << split[i] << '\n';
                         }

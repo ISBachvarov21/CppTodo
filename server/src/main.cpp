@@ -1,14 +1,4 @@
-#include "dependencies/CppHttp/include/CppHttp.hpp"
-#include <iostream>
-#include <string>
-#include <tuple>
-
-using returnType = std::tuple<CppHttp::Net::ResponseType, std::string, std::optional<std::vector<std::string>>>;
-
-returnType Hello(CppHttp::Net::Request req) {
-	std::string body = "Hello, World!";
-	return std::make_tuple(CppHttp::Net::ResponseType::OK, body, std::optional<std::vector<std::string>>(false));
-}
+#include "endpoints.hpp"
 
 int main(int argc, char** argv) {
 	CppHttp::Net::Router router;
@@ -23,7 +13,8 @@ int main(int argc, char** argv) {
 
 	server.SetOnReceive(onReceive);
 
-	router.AddRoute("GET", "/hello", Hello);
+	router.AddRoute("GET",  "/", 	Index);
+	router.AddRoute("POST", "/add", AddTodo);
 
 	server.Listen("0.0.0.0", 80, std::thread::hardware_concurrency());
 }

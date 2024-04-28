@@ -42,7 +42,7 @@ namespace CppHttp {
 						}
 						std::cout << "\033[1;34m[*] Body:\n";
 						// split body into lines
-						std::vector<std::string> lines = CppHttp::Net::Request::Split(req.m_info.body, '\n');
+						std::vector<std::string> lines = CppHttp::Utils::Split(req.m_info.body, '\n');
 						for (auto& line : lines) {
 							std::cout << "	" << line << '\n';
 						}

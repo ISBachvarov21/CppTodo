@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Cpp Todo</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <script>
+            function addTodo() {
+                // send a post request to server with input value
+                const inp = document.getElementById("inp");
+                const todo = inp.value;
+                fetch("http://localhost/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ "todo": todo })
+                }).then((res) => {
+                    if (res.ok) {
+                        location.reload();
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body class = "overflow-scroll">
+        <div class="mt-5 mb-40 min-h-screen min-w-screen" id="root">
+            <div class="flex items-center justify-center flex-col gap-[1vh]">
+                {{todos}}
+                
+                <div class="bg-slate-200 h-[12vh] w-[90vw] fixed bottom-0 flex flex-row justify-center items-center rounded-t-[10pt]">
+                    <input class="bg-white h-[8vh] w-[30vw] bottom-4 rounded-[40pt] px-10" type="text" id="inp">
+                <button onClick="addTodo()">
+                    <svg class="h-[6vh] w-[6vh] bottom-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </body>
+</html>
