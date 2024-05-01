@@ -25,7 +25,7 @@ returnType Index(CppHttp::Net::Request req) {
 
     int i = 0;
     for (auto& todo : todos) {
-        todosHtml += "<div id='" + std::to_string(i) + "' class='flex bg-blue-500 min-h-[10vh] w-[35vw] rounded-[10pt] items-center text-left text-wrap overflow-hidden'><p class='pl-[10px] py-[12px] text-white text-wrap whitespace-normal overflow-auto break-all'>" + todo + "</p><button class='ml-[10px] mr-[10px]' onClick='removeTodo(this)'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' id='checkbox' class='w-[4vh] h-[4vh]'><path d='M405.333 106.667v298.666H106.667V106.667h298.666m0-42.667H106.667C83.198 64 64 83.198 64 106.667v298.666C64 428.802 83.198 448 106.667 448h298.666C428.802 448 448 428.802 448 405.333V106.667C448 83.198 428.802 64 405.333 64z'></path></svg></button></div>";
+        todosHtml += "<div id='" + std::to_string(i) + "' class='flex flex-row bg-blue-500 min-h-[10vh] w-[35vw] rounded-[10pt] items-center text-wrap overflow-hidden'><div class='flex flex-row items-center relative w-[100%] h-[100%]'><p class='pl-[10px] py-[12px] text-white text-wrap whitespace-normal overflow-auto break-all'>" + todo + "</p><button class='absolute right-[0px] ml-[10px] mr-[10px]' onClick='removeTodo(this)'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' id='checkbox' class='w-[4vh] h-[4vh]'><path d='M405.333 106.667v298.666H106.667V106.667h298.666m0-42.667H106.667C83.198 64 64 83.198 64 106.667v298.666C64 428.802 83.198 448 106.667 448h298.666C428.802 448 448 428.802 448 405.333V106.667C448 83.198 428.802 64 405.333 64z'></path></svg></button></div></div>";
         ++i;
     }
 
@@ -68,8 +68,6 @@ returnType RemoveTodo(CppHttp::Net::Request req) {
     }
 
     int todo = std::stoi(body["todo"].get<std::string>());
-
-    std::cout << "\033[1;34m[*] Removing todo #" << todo << "\033[0m\n";
 
     if (todo < 0 || todo >= todos.size()) {
         return { CppHttp::Net::ResponseType::BAD_REQUEST, "Invalid 'todo' field", {} };
