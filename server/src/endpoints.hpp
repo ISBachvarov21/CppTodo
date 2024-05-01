@@ -23,8 +23,10 @@ returnType Index(CppHttp::Net::Request req) {
 
     std::string todosHtml;
 
+    int i = 0;
     for (auto& todo : todos) {
-        todosHtml += "<div class='flex bg-blue-500 min-h-[10vh] w-[35vw] rounded-[10pt] justify-center items-center text-wrap overflow-hidden'> <p class='px-[16px] py-[12px] text-white text-wrap whitespace-normal overflow-auto' style='word-break: break-all;'>" + todo + "</p></div>";
+        todosHtml += "<div id='" + std::to_string(i) + "' class='flex bg-blue-500 min-h-[10vh] w-[35vw] rounded-[10pt] items-center text-left text-wrap overflow-hidden'><p class='pl-[10px] py-[12px] text-white text-wrap whitespace-normal overflow-auto break-all'>" + todo + "</p><button class='ml-[10px] mr-[10px]' onClick='removeTodo(this)'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' id='checkbox' class='w-[4vh] h-[4vh]'><path d='M405.333 106.667v298.666H106.667V106.667h298.666m0-42.667H106.667C83.198 64 64 83.198 64 106.667v298.666C64 428.802 83.198 448 106.667 448h298.666C428.802 448 448 428.802 448 405.333V106.667C448 83.198 428.802 64 405.333 64z'></path></svg></button></div>";
+        ++i;
     }
 
     content.replace(content.find("{{todos}}"), 14, todosHtml);
@@ -46,25 +48,34 @@ returnType AddTodo(CppHttp::Net::Request req) {
         return { CppHttp::Net::ResponseType::BAD_REQUEST, "Missing 'todo' field", {} };
     }
 
-
     todos.push_back(body["todo"]);
 
-    std::ifstream file("templates/index.html");
+    return { CppHttp::Net::ResponseType::OK, "", {} };
+}
 
-    if (!file.is_open()) {
-        return { CppHttp::Net::ResponseType::NOT_FOUND, "404 Not Found", {} };
+returnType RemoveTodo(CppHttp::Net::Request req) {
+    json body;
+
+	try {
+		body = json::parse(req.m_info.body);
+	}
+	catch (json::exception& e) {
+		return std::make_tuple(CppHttp::Net::ResponseType::BAD_REQUEST, e.what(), std::nullopt);
+	}
+
+    if (body.find("todo") == body.end()) {
+        return { CppHttp::Net::ResponseType::BAD_REQUEST, "Missing 'todo' field", {} };
     }
 
-    std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-    std::string todosHtml;
+    int todo = std::stoi(body["todo"].get<std::string>());
 
-    for (auto& todo : todos) {
-        todosHtml += "<div class='bg-blue-500 h-[10vh] w-[35vw] rounded-[10pt]'>" + todo + "</div>";
+    std::cout << "\033[1;34m[*] Removing todo #" << todo << "\033[0m\n";
+
+    if (todo < 0 || todo >= todos.size()) {
+        return { CppHttp::Net::ResponseType::BAD_REQUEST, "Invalid 'todo' field", {} };
     }
 
-    std::cout << "Todos: " << todosHtml << std::endl;
+    todos.erase(todos.begin() + todo);
 
-    content.replace(content.find("{{todos}}"), 14, todosHtml);
-
-    return { CppHttp::Net::ResponseType::HTML, content, {} };
+    return { CppHttp::Net::ResponseType::OK, "", {} };
 }

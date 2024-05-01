@@ -13,8 +13,9 @@ int main(int argc, char** argv) {
 
 	server.SetOnReceive(onReceive);
 
-	router.AddRoute("GET",  "/", 	Index);
-	router.AddRoute("POST", "/add", AddTodo);
+	router.AddRoute("GET",    "/", 	     Index);
+	router.AddRoute("POST",   "/add",    AddTodo);
+	router.AddRoute("DELETE", "/remove", RemoveTodo);
 
 	server.Listen("0.0.0.0", 80, std::thread::hardware_concurrency());
 }

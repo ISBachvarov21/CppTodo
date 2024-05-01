@@ -4,12 +4,41 @@
         <script src="https://cdn.tailwindcss.com"></script>
 
         <script>
+            function countId(id) {
+                var counter = 0;
+                $("label").each(function() {
+                  if(this.id==id) {
+                     counter+=1;
+                   } 
+                });
+            }
+
             function addTodo() {
                 // send a post request to server with input value
                 const inp = document.getElementById("inp");
                 const todo = inp.value;
                 fetch("http://localhost/add", {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ "todo": todo })
+                }).then((res) => {
+                    if (res.ok) {
+                        location.reload();
+                    }
+                });
+            }
+
+            function removeTodo(element) {
+                // get todo id from element id
+                const todo = element.parentElement.id;
+
+                console.log(element)
+                console.log(todo)
+
+                fetch("http://localhost/remove", {
+                    method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
                     },
