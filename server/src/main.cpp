@@ -14,6 +14,7 @@ int main(int argc, char** argv) {
 	server.SetOnReceive(onReceive);
 
 	router.AddRoute("GET",    "/", 	     Index);
+	router.AddRoute("GET", "/todos", GetTodos);
 	router.AddRoute("POST",   "/add",    AddTodo);
 	router.AddRoute("DELETE", "/remove", RemoveTodo);
 
